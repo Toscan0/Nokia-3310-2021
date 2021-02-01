@@ -9,7 +9,11 @@ Shader "Hidden/ScreenTransitionImageEffect"
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_MaskTex ("Mask Texture", 2D) = "white" {}
-		_MaskValue ("Mask Value", Range(0,1)) = 0.5
+		_FadeRadius("Fade Radius", Range(0,1)) = 0.5
+
+		_MaskCenter("Mask Center", vector) = (1, 1, 0, 0)
+		_Softness("Softness", float) = 1
+
 		_MaskColor ("Mask Color", Color) = (0,0,0,1)
 		[Toggle(INVERT_MASK)] _INVERT_MASK ("Mask Invert", Float) = 0
 	}
@@ -53,32 +57,43 @@ Shader "Hidden/ScreenTransitionImageEffect"
 				return o;
 			}
 			
+			struct Data
+			{
+				float4 vertex : SV_Position;
+				float2 uv : TEXCOORD0;
+				float number : VALUE;
+			};
+
 			sampler2D _MainTex;
 			sampler2D _MaskTex;
-			float _MaskValue;
 			float4 _MaskColor;
 
-			fixed4 frag (v2f i) : SV_Target
+			float2 _MaskCenter;
+			float _FadeRadius;
+			float _Softness;
+
+			
+			Data VSMain(float4 vertex:POSITION, float2 uv : TEXCOORD0)
 			{
-				float4 col = tex2D(_MainTex, i.uv);
-				float4 mask = tex2D(_MaskTex, i.uv);
+				Data VS;
+				VS.uv = uv;
+				VS.vertex = vertex;
+				VS.number = _ScreenParams.x;  //vertex shader variable value to print
+				return VS;
+			}
 
-				// Scale 0..255 to 0..254 range.
-				float alpha = mask.a * (1 - 1/255.0);
+			fixed4 frag(v2f i) : SV_Target
+			{
+				fixed4 col = tex2D(_MainTex, i.uv);
 
-				// If the mask value is greater than the alpha value,
-				// we want to draw the mask.
-				float weight = step(_MaskValue, alpha);
-			#if INVERT_MASK
-				weight = 1 - weight;
-			#endif
+				//    Calculate the pixel coordinates of the current point relative to the mask center.
+				fixed2 relative = (i.uv - _MaskCenter.xy) * _ScreenParams.xy;
+				//  Normalize to the longest screen dimension.
+				relative /= max(_ScreenParams.x, _ScreenParams.y);
 
-				// Blend in mask color depending on the weight
-				//col.rgb = lerp(_MaskColor, col.rgb, weight);
-
-				// Blend in mask color depending on the weight
-				// Additionally also apply a blend between mask and scene
-				col.rgb = lerp(col.rgb, lerp(_MaskColor.rgb, col.rgb, weight), _MaskColor.a);
+				//    The mask is opaque if further than _FadeRadius from the center.
+				fixed transparency = clamp((_FadeRadius - length(relative)) / _Softness, 0, 1);
+				col.rgb = lerp(_MaskColor.rgb, col.rgb, smoothstep(0, 1, transparency));
 
 				return col;
 			}

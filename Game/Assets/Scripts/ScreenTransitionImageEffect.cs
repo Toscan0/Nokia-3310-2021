@@ -13,11 +13,14 @@ public class ScreenTransitionImageEffect : MonoBehaviour
     /// and a material instantiated from the shader
     public Shader shader;
 
-    [Range(0,1.0f)]
-    public float maskValue;
     public Color maskColor = Color.black;
     public Texture2D maskTexture;
     public bool maskInvert;
+
+    public Vector2 maskCenter;
+    [Range(0, 1.0f)]
+    public float fadeRadius;
+    public float softness;
 
     private Material m_Material;
     private bool m_maskInvert;
@@ -37,13 +40,6 @@ public class ScreenTransitionImageEffect : MonoBehaviour
 
     void Start()
     {
-        // Disable if we don't support image effects
-        if (!SystemInfo.supportsImageEffects)
-        {
-            enabled = false;
-            return;
-        }
-
         shader = Shader.Find("Hidden/ScreenTransitionImageEffect");
 
         // Disable the image effect if the shader can't
@@ -69,9 +65,12 @@ public class ScreenTransitionImageEffect : MonoBehaviour
         }
 
         material.SetColor("_MaskColor", maskColor);
-        material.SetFloat("_MaskValue", maskValue);
         material.SetTexture("_MainTex", source);
         material.SetTexture("_MaskTex", maskTexture);
+
+        material.SetVector("_MaskCenter", maskCenter);
+        material.SetFloat("_FadeRadius", fadeRadius);
+        material.SetFloat("_Softness", softness);
 
         if (material.IsKeywordEnabled("INVERT_MASK") != maskInvert)
         {
