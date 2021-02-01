@@ -3,12 +3,7 @@
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerManager : MonoBehaviour
 {
-    public bool IsGrounded { private get; set; } = true;
-
-    [SerializeField]
-    private float movementSpeed = 5f;
-    [SerializeField]
-    private float jumpForce = 5f;
+    public bool IsGrounded { private get; set; } = false;
 
     private float horizontalMove = 0f;
     private bool jump = false;
@@ -24,12 +19,10 @@ public class PlayerManager : MonoBehaviour
     {
         // move player
         horizontalMove = Input.GetAxis("Horizontal");
-        playerMovement.Move(transform.right * horizontalMove *
-            Time.deltaTime * movementSpeed);
+        
 
         if (IsGrounded && Input.GetButtonDown("Jump"))
         {
-            Debug.Log("DDDD");
             jump = true;
         }
 
@@ -37,11 +30,14 @@ public class PlayerManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        playerMovement.Move(horizontalMove * Time.fixedDeltaTime);
+
+
         if (jump)
         {
             jump = false;
 
-            playerMovement.Jump(jumpForce);
+            playerMovement.Jump();
         }
     }
 }

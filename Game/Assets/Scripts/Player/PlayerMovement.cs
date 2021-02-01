@@ -3,6 +3,17 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    private float movSpeed = 50f;
+    [Range(0, .3f)]
+    [SerializeField]
+    private float movFriction = .05f;
+    [SerializeField]
+    private float jumpForce = 5f;
+    
+
+    private Vector3 auxVel = Vector3.zero;
+
     private new Rigidbody2D rigidbody;
 
     private void Awake()
@@ -10,17 +21,17 @@ public class PlayerMovement : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    internal void Move(Vector3 position)
+    internal void Move(float move)
     {
-        //transform.position += position;
+        move *= movSpeed;
 
-        // Move the character by finding the target velocity
-        Vector3 targetVelocity = new Vector2(move * 10f, rigidbody.velocity.y);
-        // And then smoothing it out and applying it to the character
-        rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+        Vector3 newVelocity = new Vector2(move * 10f, rigidbody.velocity.y);
+
+        rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity,
+            newVelocity, ref auxVel, movFriction);
     }
 
-    internal void Jump(float jumpForce)
+    internal void Jump()
     {
         rigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     }
