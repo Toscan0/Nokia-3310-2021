@@ -4,7 +4,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("Image Effects/Screen Transition")]
-public class ScreenTransitionImageEffect : MonoBehaviour
+public class CircularFadeEffect : MonoBehaviour
 {
     [SerializeField]
     private Transform target;
@@ -16,12 +16,23 @@ public class ScreenTransitionImageEffect : MonoBehaviour
     private Color maskColor;
     [SerializeField]
     private bool maskInvert;
-    [SerializeField] [Range(0, 1.0f)]
-    private float fadeRadius;
+    [SerializeField]
+    [Range(0, 1.0f)]
+    private float minFadeRadius;
+    [SerializeField]
+    [Range(0, 1.0f)]
+    private float maxFadeRadius;
 
+    private const float fadeTimer = 5f;
+
+    private bool toFadeOut = true;
     private Vector2 fadeCenter;
+    private float fadeRadius = 0; // gos from 0 to 1
+    private float clockTimer = 0;
+
     private Camera cam;
     private Material shaderMaterial;
+
     private Material ShaderMaterial
     {
         get
@@ -43,14 +54,44 @@ public class ScreenTransitionImageEffect : MonoBehaviour
         {
             enabled = false;
         }
+
+        clockTimer = fadeTimer;
+        fadeRadius = maxFadeRadius;
+
     }
 
     void Update()
     {
-
         Vector3 targetVPPos = cam.WorldToViewportPoint(target.position);
         fadeCenter.x = targetVPPos.x;
         fadeCenter.y = targetVPPos.y;
+
+        UpdateFadeAnim();
+    }
+
+    private void UpdateFadeAnim()
+    {
+        if (toFadeOut)
+        {
+            clockTimer -= Time.deltaTime;
+
+            if (clockTimer <= 0)
+            {
+                clockTimer = 0;
+                toFadeOut = false;
+            }
+            fadeRadius = NumberConvert(clockTimer, 0, fadeTimer, minFadeRadius, maxFadeRadius);
+        }
+        else
+        {
+            clockTimer += Time.deltaTime;
+            if (clockTimer >= fadeTimer)
+            {
+                clockTimer = fadeTimer;
+                toFadeOut = true;
+            }
+            fadeRadius = NumberConvert(clockTimer, 0, fadeTimer, minFadeRadius, maxFadeRadius);
+        }
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -66,7 +107,6 @@ public class ScreenTransitionImageEffect : MonoBehaviour
         ShaderMaterial.SetTexture("_MaskTex", maskTexture);
         ShaderMaterial.SetVector("_FadeCenter", fadeCenter);
         ShaderMaterial.SetFloat("_FadeRadius", fadeRadius);
-
         if (ShaderMaterial.IsKeywordEnabled("INVERT_MASK") != maskInvert)
         {
             if (maskInvert)
@@ -84,5 +124,12 @@ public class ScreenTransitionImageEffect : MonoBehaviour
         {
             DestroyImmediate(ShaderMaterial);
         }
+    }
+
+    private float NumberConvert(float toConvert,
+        float minOldScale, float maxOldScale,
+        float minNewScale, float maxNewScale)
+    {
+        return ((((toConvert - minOldScale) * (maxNewScale - minNewScale)) / (maxOldScale - minOldScale)) + minNewScale);
     }
 }
