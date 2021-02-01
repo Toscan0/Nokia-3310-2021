@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce = 5f;
     
-
     private Vector3 auxVel = Vector3.zero;
 
     private new Rigidbody2D rigidbody;

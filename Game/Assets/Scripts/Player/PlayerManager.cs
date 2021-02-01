@@ -17,15 +17,12 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        // move player
         horizontalMove = Input.GetAxis("Horizontal");
-        
 
         if (IsGrounded && Input.GetButtonDown("Jump"))
         {
             jump = true;
         }
-
     }
 
     void FixedUpdate()
