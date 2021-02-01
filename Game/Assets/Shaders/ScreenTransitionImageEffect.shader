@@ -1,7 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// This code is related to an answer I provided in the Unity forums at:
-// http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
+﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 
 Shader "Hidden/ScreenTransitionImageEffect"
 {
@@ -9,11 +6,9 @@ Shader "Hidden/ScreenTransitionImageEffect"
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_MaskTex ("Mask Texture", 2D) = "white" {}
-		_FadeRadius("Fade Radius", Range(0,1)) = 0.5
-
-		_MaskCenter("Mask Center", vector) = (1, 1, 0, 0)
-		_Softness("Softness", float) = 1
-
+		_FadeRadius("Fade Radius", Range(0,1)) = 0.1
+		_FadeSoftness("_Fade Softness", Range(0,1)) = 0
+		_FadeCenter("Fade Center", vector) = (1, 1, 0, 0)
 		_MaskColor ("Mask Color", Color) = (0,0,0,1)
 		[Toggle(INVERT_MASK)] _INVERT_MASK ("Mask Invert", Float) = 0
 	}
@@ -30,7 +25,6 @@ Shader "Hidden/ScreenTransitionImageEffect"
 			#include "UnityCG.cginc"
 
 			#pragma shader_feature INVERT_MASK
-
 
 			struct appdata
 			{
@@ -57,42 +51,24 @@ Shader "Hidden/ScreenTransitionImageEffect"
 				return o;
 			}
 			
-			struct Data
-			{
-				float4 vertex : SV_Position;
-				float2 uv : TEXCOORD0;
-				float number : VALUE;
-			};
-
 			sampler2D _MainTex;
 			sampler2D _MaskTex;
 			float4 _MaskColor;
-
-			float2 _MaskCenter;
+			float2 _FadeCenter;
 			float _FadeRadius;
-			float _Softness;
-
-			
-			Data VSMain(float4 vertex:POSITION, float2 uv : TEXCOORD0)
-			{
-				Data VS;
-				VS.uv = uv;
-				VS.vertex = vertex;
-				VS.number = _ScreenParams.x;  //vertex shader variable value to print
-				return VS;
-			}
+			float _FadeSoftness;
 
 			fixed4 frag(v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
 
 				//    Calculate the pixel coordinates of the current point relative to the mask center.
-				fixed2 relative = (i.uv - _MaskCenter.xy) * _ScreenParams.xy;
+				fixed2 relative = (i.uv - _FadeCenter.xy) * _ScreenParams.xy;
 				//  Normalize to the longest screen dimension.
 				relative /= max(_ScreenParams.x, _ScreenParams.y);
 
 				//    The mask is opaque if further than _FadeRadius from the center.
-				fixed transparency = clamp((_FadeRadius - length(relative)) / _Softness, 0, 1);
+				fixed transparency = clamp((_FadeRadius - length(relative)) / _FadeSoftness, 0, 1);
 				col.rgb = lerp(_MaskColor.rgb, col.rgb, smoothstep(0, 1, transparency));
 
 				return col;

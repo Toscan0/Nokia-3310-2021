@@ -1,59 +1,56 @@
-﻿// This code is related to an answer I provided in the Unity forums at:
-// http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
-
+﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 using UnityEngine;
-using System.Collections;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("Image Effects/Screen Transition")]
 public class ScreenTransitionImageEffect : MonoBehaviour
 {
-    /// Provides a shader property that is set in the inspector
-    /// and a material instantiated from the shader
-    public Shader shader;
+    [SerializeField]
+    private Transform target;
+    [SerializeField]
+    private Shader shader;
+    [SerializeField]
+    private Texture2D maskTexture;
+    [SerializeField]
+    private Color maskColor;
+    [SerializeField]
+    private bool maskInvert;
+    [SerializeField] [Range(0, 1.0f)]
+    private float fadeRadius;
 
-    public Color maskColor = Color.black;
-    public Texture2D maskTexture;
-    public bool maskInvert;
-
-    public Vector2 maskCenter;
-    [Range(0, 1.0f)]
-    public float fadeRadius;
-    public float softness;
-
-    private Material m_Material;
-    private bool m_maskInvert;
-
-    Material material
+    private Vector2 fadeCenter;
+    private Camera cam;
+    private Material shaderMaterial;
+    private Material ShaderMaterial
     {
         get
         {
-            if (m_Material == null)
+            if (shaderMaterial == null)
             {
-                m_Material = new Material(shader);
-                m_Material.hideFlags = HideFlags.HideAndDontSave;
+                shaderMaterial = new Material(shader);
+                shaderMaterial.hideFlags = HideFlags.HideAndDontSave;
             }
-            return m_Material;
+            return shaderMaterial;
         }
     }
 
     void Start()
     {
-        shader = Shader.Find("Hidden/ScreenTransitionImageEffect");
+        cam = GetComponent<Camera>();
 
-        // Disable the image effect if the shader can't
-        // run on the users graphics card
         if (shader == null || !shader.isSupported)
+        {
             enabled = false;
+        }
     }
 
-    void OnDisable()
+    void Update()
     {
-        if (m_Material)
-        {
-            DestroyImmediate(m_Material);
-        }
+
+        Vector3 targetVPPos = cam.WorldToViewportPoint(target.position);
+        fadeCenter.x = targetVPPos.x;
+        fadeCenter.y = targetVPPos.y;
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -64,22 +61,28 @@ public class ScreenTransitionImageEffect : MonoBehaviour
             return;
         }
 
-        material.SetColor("_MaskColor", maskColor);
-        material.SetTexture("_MainTex", source);
-        material.SetTexture("_MaskTex", maskTexture);
+        ShaderMaterial.SetColor("_MaskColor", maskColor);
+        ShaderMaterial.SetTexture("_MainTex", source);
+        ShaderMaterial.SetTexture("_MaskTex", maskTexture);
+        ShaderMaterial.SetVector("_FadeCenter", fadeCenter);
+        ShaderMaterial.SetFloat("_FadeRadius", fadeRadius);
 
-        material.SetVector("_MaskCenter", maskCenter);
-        material.SetFloat("_FadeRadius", fadeRadius);
-        material.SetFloat("_Softness", softness);
-
-        if (material.IsKeywordEnabled("INVERT_MASK") != maskInvert)
+        if (ShaderMaterial.IsKeywordEnabled("INVERT_MASK") != maskInvert)
         {
             if (maskInvert)
-                material.EnableKeyword("INVERT_MASK");
+                ShaderMaterial.EnableKeyword("INVERT_MASK");
             else
-                material.DisableKeyword("INVERT_MASK");
+                ShaderMaterial.DisableKeyword("INVERT_MASK");
         }
 
-        Graphics.Blit(source, destination, material);
+        Graphics.Blit(source, destination, ShaderMaterial);
+    }
+
+    void OnDisable()
+    {
+        if (ShaderMaterial)
+        {
+            DestroyImmediate(ShaderMaterial);
+        }
     }
 }
