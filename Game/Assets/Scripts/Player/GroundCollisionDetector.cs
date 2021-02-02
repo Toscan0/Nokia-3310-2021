@@ -1,16 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class GroundCollisionDetector : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerManager playerManager;
+    public static  Action<bool> OnPlayerGrounded;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
-            playerManager.IsGrounded = true;
+            OnPlayerGrounded?.Invoke(true);
         }
     }
 
@@ -18,7 +18,7 @@ public class GroundCollisionDetector : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            playerManager.IsGrounded = false;
+            OnPlayerGrounded?.Invoke(false);
         }
     }
 }
