@@ -3,13 +3,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(Animator))]
 public class PlayerManager : MonoBehaviour
 {
 
-    [SerializeField]
+    /*[SerializeField]
     private Sprite iddleSprite;
     [SerializeField]
-    private Sprite jumpSprite;
+    private Sprite jumpSprite;*/
 
     private float horizontalMove = 0f;
     private bool jump = false;
@@ -17,14 +18,15 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         GroundCollisionDetector.OnPlayerGrounded += IsPlayerGrounded;
-        
     }
 
     private void Update()
@@ -34,6 +36,8 @@ public class PlayerManager : MonoBehaviour
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
             jump = true;
+
+            animator.SetTrigger("Jump");
         }
     }
 
@@ -44,9 +48,7 @@ public class PlayerManager : MonoBehaviour
         if (jump)
         {
             jump = false;
-            playerMovement.Jump();
-
-            spriteRenderer.sprite = jumpSprite;
+            playerMovement.Jump();   
         }
     }
 
@@ -56,7 +58,8 @@ public class PlayerManager : MonoBehaviour
 
         if (isGrounded)
         {
-            spriteRenderer.sprite = iddleSprite;
+            animator.SetTrigger("Iddle");
+            Debug.Log("dddd");
         }
     }
 
