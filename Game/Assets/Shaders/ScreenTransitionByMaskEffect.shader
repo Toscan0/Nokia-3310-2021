@@ -1,6 +1,5 @@
 ﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 
-
 Shader "Hidden/ScreenTransitionImageEffect"
 {
 	Properties
@@ -24,7 +23,6 @@ Shader "Hidden/ScreenTransitionImageEffect"
 			#include "UnityCG.cginc"
 
 			#pragma shader_feature INVERT_MASK
-
 
 			struct appdata
 			{
@@ -70,9 +68,6 @@ Shader "Hidden/ScreenTransitionImageEffect"
 			#if INVERT_MASK
 				weight = 1 - weight;
 			#endif
-
-				// Blend in mask color depending on the weight
-				//col.rgb = lerp(_MaskColor, col.rgb, weight);
 
 				// Blend in mask color depending on the weight
 				// Additionally also apply a blend between mask and scene

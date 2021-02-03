@@ -16,7 +16,6 @@ public class ScreenTransitionByMaskEffect : MonoBehaviour
     private float maskValue;
 
     private Material shaderMaterial;
-
     private Material ShaderMaterial
     {
         get
@@ -38,7 +37,6 @@ public class ScreenTransitionByMaskEffect : MonoBehaviour
         }
     }
 
-    
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         if (!enabled)
