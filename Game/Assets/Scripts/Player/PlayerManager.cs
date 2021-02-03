@@ -33,11 +33,13 @@ public class PlayerManager : MonoBehaviour
     {
         horizontalMove = Input.GetAxis("Horizontal");
 
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
             jump = true;
 
-            animator.SetTrigger("Jump");
+            animator.SetBool("Jump", true);
         }
     }
 
@@ -58,8 +60,8 @@ public class PlayerManager : MonoBehaviour
 
         if (isGrounded)
         {
-            animator.SetTrigger("Iddle");
-            Debug.Log("dddd");
+            animator.SetBool("Jump", false);
+
         }
     }
 
