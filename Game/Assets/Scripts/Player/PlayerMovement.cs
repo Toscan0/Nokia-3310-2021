@@ -13,25 +13,25 @@ public class PlayerMovement : MonoBehaviour
     
     private Vector3 auxVel = Vector3.zero;
 
-    private new Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody2D;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     internal void Move(float move)
     {
         move *= movSpeed;
 
-        Vector3 newVelocity = new Vector2(move * 10f, rigidbody.velocity.y);
+        Vector3 newVelocity = new Vector2(move * 10f, rigidbody2D.velocity.y);
 
-        rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity,
+        rigidbody2D.velocity = Vector3.SmoothDamp(rigidbody2D.velocity,
             newVelocity, ref auxVel, movFriction);
     }
 
     internal void Jump()
     {
-        rigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        rigidbody2D.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     }
 }
