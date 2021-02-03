@@ -1,7 +1,6 @@
 ﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 using UnityEngine;
 
-//[ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 public class CircularFadeEffect : MonoBehaviour
 {
