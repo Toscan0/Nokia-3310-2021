@@ -17,6 +17,8 @@ public class LoadSceneManager : MonoBehaviour
     private void Awake()
     {
         transitinEffectAnimator = transitionEffect.gameObject.GetComponent<Animator>();
+
+        PlayerCollisionManager.OnFlyPickedUp += LoadNextScene;
     }
 
     internal void LoadNextScene()
@@ -24,7 +26,10 @@ public class LoadSceneManager : MonoBehaviour
         indexToLoad = SceneManager.GetActiveScene().buildIndex + 1;
 
         transitinEffectAnimator.SetTrigger("FadeOut");
-        canvasAnimator.SetTrigger("FadeOut");
+        if (canvasAnimator != null)
+        {
+            canvasAnimator.SetTrigger("FadeOut");
+        }
 
         StartCoroutine(LoadSceneByIndex(indexToLoad, animDuration));
     }
@@ -33,5 +38,10 @@ public class LoadSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene(i);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerCollisionManager.OnFlyPickedUp += LoadNextScene;
     }
 }
