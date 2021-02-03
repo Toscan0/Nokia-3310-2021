@@ -1,6 +1,6 @@
 ﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 
-Shader "Hidden/ScreenTransitionImageEffect"
+Shader "Hidden/FadeImageEffect"
 {
 	Properties
 	{
