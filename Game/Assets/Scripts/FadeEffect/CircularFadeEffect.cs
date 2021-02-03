@@ -1,13 +1,10 @@
 ﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
-//[AddComponentMenu("Image Effects/Fade effect")]
 public class CircularFadeEffect : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target;
     [SerializeField]
     private Shader shader;
     [SerializeField]
@@ -62,7 +59,7 @@ public class CircularFadeEffect : MonoBehaviour
 
     void Update()
     {
-        Vector3 targetVPPos = cam.WorldToViewportPoint(target.position);
+        Vector3 targetVPPos = cam.WorldToViewportPoint(gameObject.transform.position);
         fadeCenter.x = targetVPPos.x;
         fadeCenter.y = targetVPPos.y;
 
