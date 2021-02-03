@@ -1,17 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(Animator))]
 public class PlayerManager : MonoBehaviour
 {
-
-    /*[SerializeField]
-    private Sprite iddleSprite;
-    [SerializeField]
-    private Sprite jumpSprite;*/
-
     private float horizontalMove = 0f;
     private bool jump = false;
     private bool isGrounded = false;
@@ -57,17 +50,14 @@ public class PlayerManager : MonoBehaviour
     private void IsPlayerGrounded(bool b)
     {
         isGrounded = b;
-
         if (isGrounded)
         {
             animator.SetBool("Jump", false);
-
         }
     }
 
     private void OnDestroy()
     {
         GroundCollisionDetector.OnPlayerGrounded -= IsPlayerGrounded;
-
     }
 }
