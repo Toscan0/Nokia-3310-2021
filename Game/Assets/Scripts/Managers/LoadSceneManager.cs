@@ -42,6 +42,6 @@ public class LoadSceneManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerCollisionManager.OnFlyPickedUp += LoadNextScene;
+        PlayerCollisionManager.OnFlyPickedUp -= LoadNextScene;
     }
 }
