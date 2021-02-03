@@ -5,12 +5,10 @@ Shader "Hidden/FadeImageEffect"
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_MaskTex ("Mask Texture", 2D) = "white" {}
 		_FadeRadius("Fade Radius", Range(0,1)) = 0.1
-		_FadeSoftness("_Fade Softness", Range(0,1)) = 0
+		_FadeSoftness("Fade Softness", Range(0,1)) = 0
 		_FadeCenter("Fade Center", vector) = (1, 1, 0, 0)
-		_MaskColor ("Mask Color", Color) = (0,0,0,1)
-		[Toggle(INVERT_MASK)] _INVERT_MASK ("Mask Invert", Float) = 0
+		_FadeColor ("Fade Color", Color) = (0,0,0,1)
 	}
 	SubShader
 	{
@@ -52,8 +50,7 @@ Shader "Hidden/FadeImageEffect"
 			}
 			
 			sampler2D _MainTex;
-			sampler2D _MaskTex;
-			float4 _MaskColor;
+			float4 _FadeColor;
 			float2 _FadeCenter;
 			float _FadeRadius;
 			float _FadeSoftness;
@@ -69,7 +66,7 @@ Shader "Hidden/FadeImageEffect"
 
 				//    The mask is opaque if further than _FadeRadius from the center.
 				fixed transparency = clamp((_FadeRadius - length(relative)) / _FadeSoftness, 0, 1);
-				col.rgb = lerp(_MaskColor.rgb, col.rgb, smoothstep(0, 1, transparency));
+				col.rgb = lerp(_FadeColor.rgb, col.rgb, smoothstep(0, 1, transparency));
 
 				return col;
 			}

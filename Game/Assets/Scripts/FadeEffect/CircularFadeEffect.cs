@@ -8,11 +8,7 @@ public class CircularFadeEffect : MonoBehaviour
     [SerializeField]
     private Shader shader;
     [SerializeField]
-    private Texture2D maskTexture;
-    [SerializeField]
-    private Color maskColor;
-    [SerializeField]
-    private bool maskInvert;
+    private Color fadeColor;
     [SerializeField]
     [Range(0, 1.0f)]
     private float minFadeRadius;
@@ -99,18 +95,10 @@ public class CircularFadeEffect : MonoBehaviour
             return;
         }
 
-        ShaderMaterial.SetColor("_MaskColor", maskColor);
         ShaderMaterial.SetTexture("_MainTex", source);
-        ShaderMaterial.SetTexture("_MaskTex", maskTexture);
+        ShaderMaterial.SetColor("_FadeColor", fadeColor);
         ShaderMaterial.SetVector("_FadeCenter", fadeCenter);
         ShaderMaterial.SetFloat("_FadeRadius", fadeRadius);
-        if (ShaderMaterial.IsKeywordEnabled("INVERT_MASK") != maskInvert)
-        {
-            if (maskInvert)
-                ShaderMaterial.EnableKeyword("INVERT_MASK");
-            else
-                ShaderMaterial.DisableKeyword("INVERT_MASK");
-        }
 
         Graphics.Blit(source, destination, ShaderMaterial);
     }
@@ -127,6 +115,7 @@ public class CircularFadeEffect : MonoBehaviour
         float minOldScale, float maxOldScale,
         float minNewScale, float maxNewScale)
     {
-        return ((((toConvert - minOldScale) * (maxNewScale - minNewScale)) / (maxOldScale - minOldScale)) + minNewScale);
+        return ((((toConvert - minOldScale) * (maxNewScale - minNewScale)) / 
+            (maxOldScale - minOldScale)) + minNewScale);
     }
 }
