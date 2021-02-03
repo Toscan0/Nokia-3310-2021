@@ -3,7 +3,7 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
-[AddComponentMenu("Image Effects/Screen Transition")]
+//[AddComponentMenu("Image Effects/Fade effect")]
 public class CircularFadeEffect : MonoBehaviour
 {
     [SerializeField]

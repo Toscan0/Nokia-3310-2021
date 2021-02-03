@@ -3,7 +3,7 @@
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(Animator))]
-public class PlayerManager : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private float horizontalMove = 0f;
     private bool jump = false;
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
-        GroundCollisionDetector.OnPlayerGrounded += IsPlayerGrounded;
+        PlayerGroundCollisionDetector.OnPlayerGrounded += IsPlayerGrounded;
     }
 
     private void Update()
@@ -58,6 +58,6 @@ public class PlayerManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GroundCollisionDetector.OnPlayerGrounded -= IsPlayerGrounded;
+        PlayerGroundCollisionDetector.OnPlayerGrounded -= IsPlayerGrounded;
     }
 }

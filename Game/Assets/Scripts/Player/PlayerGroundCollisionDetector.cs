@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class GroundCollisionDetector : MonoBehaviour
+public class PlayerGroundCollisionDetector : MonoBehaviour
 {
     public static  Action<bool> OnPlayerGrounded;
 
