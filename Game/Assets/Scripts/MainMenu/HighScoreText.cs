@@ -5,16 +5,16 @@ using UnityEngine.UI;
 public class HighScoreText : MonoBehaviour
 {
     private string scores = "" +
-        "1) qwertyuiop 10:10s\n" +
-        "2) qwertyuio 10:10s\n" +
-        "3) qwertyui 10:10s\n" +
-        "4) blablab 10:10s\n" +
-        "5) blablab 10:10s\n" +
-        "6) blablab 10:10s\n" +
-        "7) blablab 10:10s\n" +
-        "8) blablab 10:10s\n" +
-        "9) blablab 10:10s\n" +
-        "10) blablab 10:10s";
+        "1) 1234567 10:10:30min\n" +
+        "2) 1234567 10:10:30min\n" +
+        "3) 1234567 10:10:30min\n" +
+        "4) 1234567 10:10:30min\n" +
+        "5) 1234567 10:10:30min\n" +
+        "6) 1234567 10:10:30min\n" +
+        "7) 1234567 10:10:30min\n" +
+        "8) 1234567 10:10:30min\n" +
+        "9) 1234567 10:10:30min\n" +
+        "10) 1234567 10:10:30min";
 
     private Text text;
 
