@@ -1,8 +1,7 @@
 ﻿// code based on: http://forum.unity3d.com/threads/circular-fade-in-out-shader.344816/
 using UnityEngine;
 
-//[RequireComponent(typeof(Camera))]
-public class ScreenTransitionImageEffect : MonoBehaviour
+public class ScreenTransitionByMaskEffect : MonoBehaviour
 {
     [SerializeField]
     private Shader shader;
