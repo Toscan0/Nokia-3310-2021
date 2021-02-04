@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartLevel1 : MonoBehaviour
+public class MainMenuSceneHolder : MonoBehaviour
 {
     [SerializeField]
     private LoadSceneManager loadSceneManager;
@@ -14,7 +14,7 @@ public class StartLevel1 : MonoBehaviour
     {
         StartCoroutine(getDataFromServer.GetHighScore());
 
-        Invoke("PlayGame", 60f);
+        Invoke("PlayGame", 5f);
     }
 
     private void PlayGame()

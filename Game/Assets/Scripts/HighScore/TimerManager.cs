@@ -12,7 +12,7 @@ public class TimerManager : MonoBehaviour
     private bool isLastLevel;
 
     private float startTime = 0;
-    private bool stopTimer = false;
+    private static bool stopTimer = false;
 
     private void Awake()
     {
@@ -21,7 +21,10 @@ public class TimerManager : MonoBehaviour
 
     void Start()
     {
-        startTime = -CurrentTime + Time.time;
+        if (!stopTimer)
+        {
+            startTime = -CurrentTime + Time.time;
+        }
         SetTimerText();
     }
 
