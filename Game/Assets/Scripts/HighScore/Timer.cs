@@ -9,19 +9,18 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private Text timerText;
 
-    private float startTime;
+    private float startTime = 0;
     private static float currentTime = 0;
 
     void Start()
     {
-        startTime = Time.time;
+        startTime = -currentTime + Time.time;
         SetTimerText();
     }
 
     void Update()
     {
         currentTime = Time.time - startTime;
-
         SetTimerText();
     }
 
