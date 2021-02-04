@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -11,8 +10,9 @@ public class TimerManager : MonoBehaviour
     private bool isLastLevel;
 
     private float startTime = 0;
-    private static float currentTime = 0;
     private bool stopTimer = false;
+
+    public static float CurrentTime { get; private set; } = 0;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class TimerManager : MonoBehaviour
 
     void Start()
     {
-        startTime = -currentTime + Time.time;
+        startTime = -CurrentTime + Time.time;
         SetTimerText();
     }
 
@@ -37,16 +37,17 @@ public class TimerManager : MonoBehaviour
     {
         if (!stopTimer)
         {
-            currentTime = Time.time - startTime;
+            CurrentTime = Time.time - startTime;
             SetTimerText();
         }
     }
 
     private void SetTimerText()
     {
-        timerText.text = GetMinutes(currentTime)
-        + ":" + GetSecondsToDisplay(currentTime) + ":"
-        + GetMilliseconds(currentTime);
+        if(timerText != null)
+        {
+            timerText.text = GetTimerAsString(CurrentTime);
+        }
     }
 
 
@@ -58,6 +59,13 @@ public class TimerManager : MonoBehaviour
 
 
     ////
+    private string GetTimerAsString(float timer)
+    {
+        return GetMinutes(timer)
+        + ":" + GetSecondsToDisplay(timer) + ":"
+        + GetMilliseconds(timer);
+    }
+
     private string GetMinutes(float seconds)
     {
         return ((int)seconds / 60).ToString();
