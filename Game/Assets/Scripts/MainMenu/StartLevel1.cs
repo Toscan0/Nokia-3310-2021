@@ -7,9 +7,14 @@ public class StartLevel1 : MonoBehaviour
     [SerializeField]
     private LoadSceneManager loadSceneManager;
 
+    [SerializeField]
+    private GetFromServer getDataFromServer;
+
     private void Start()
     {
-        Invoke("PlayGame", 1f);
+        getDataFromServer.GetHighScore();
+
+        Invoke("PlayGame", 60f);
     }
 
     private void PlayGame()

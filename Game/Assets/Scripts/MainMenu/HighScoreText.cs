@@ -21,11 +21,23 @@ public class HighScoreText : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<Text>();
+
+        GetFromServer.OnDataReceived += UpdateHighScore;
     }
 
     private void Start()
     {
-        text.text = scores;
+        UpdateHighScore(scores);
+    }
+
+    private void UpdateHighScore(string newScore)
+    {
+        text.text = newScore;
+    }
+
+    private void OnDestroy()
+    {
+        GetFromServer.OnDataReceived -= UpdateHighScore;
     }
 }
 

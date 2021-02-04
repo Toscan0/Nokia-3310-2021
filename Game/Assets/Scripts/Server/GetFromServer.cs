@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class GetFromServer : MonoBehaviour
 {
-    private const string GET_HIGHSCORE_URL = "" +
-        "http://web.tecnico.ulisboa.pt/~ist181633/MemoryGame/Server/Get_HighScore.php";
+    public static Action<string> OnDataReceived;
 
-    public string ServerData { get; private set; }
+    private const string GET_HIGHSCORE_URL = "" +
+        "http://web.tecnico.ulisboa.pt/~ist181633/CatchTheFly/ServerSide/Get_HighScore.php";
 
     public IEnumerator GetHighScore()
     {
-        string url = GET_HIGHSCORE_URL;
-
         using (UnityWebRequest webRequest = UnityWebRequest.Get(GET_HIGHSCORE_URL))
         {
             // Request and wait for the desired page.
@@ -25,7 +23,7 @@ public class GetFromServer : MonoBehaviour
             }
             else
             {
-                ServerData = ParseServerData(webRequest.downloadHandler.text);
+                OnDataReceived?.Invoke(ParseServerData(webRequest.downloadHandler.text));
             }
         }
     }

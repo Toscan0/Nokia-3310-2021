@@ -5,8 +5,8 @@ using UnityEngine.Networking;
 
 public class PostOnServer : MonoBehaviour
 {
-    private const string POST_HIGHSCORE_URL = "" + 
-        "http://web.tecnico.ulisboa.pt/~ist181633/MemoryGame/Server/Post_HighScore.php";
+    private const string POST_HIGHSCORE_URL = "" +
+        "http://web.tecnico.ulisboa.pt/~ist181633/CatchTheFly/ServerSide/Post_HighScore.php";
 
     public IEnumerator PostHighScore(string playerName, float time)
     {
