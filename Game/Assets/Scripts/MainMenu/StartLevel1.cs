@@ -12,7 +12,7 @@ public class StartLevel1 : MonoBehaviour
 
     private void Start()
     {
-        getDataFromServer.GetHighScore();
+        StartCoroutine(getDataFromServer.GetHighScore());
 
         Invoke("PlayGame", 60f);
     }
