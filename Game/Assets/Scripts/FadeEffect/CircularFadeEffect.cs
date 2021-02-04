@@ -15,6 +15,9 @@ public class CircularFadeEffect : MonoBehaviour
     [Range(0, 1.0f)]
     private float maxFadeRadius;
 
+    [SerializeField]
+    private Transform target;
+
     private const float fadeTimer = 5f;
 
     private bool toFadeOut = true;
@@ -54,7 +57,7 @@ public class CircularFadeEffect : MonoBehaviour
 
     void Update()
     {
-        Vector3 targetVPPos = cam.WorldToViewportPoint(gameObject.transform.position);
+        Vector3 targetVPPos = cam.WorldToViewportPoint(target.transform.position);
         fadeCenter.x = targetVPPos.x;
         fadeCenter.y = targetVPPos.y;
 
