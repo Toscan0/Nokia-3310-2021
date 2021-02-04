@@ -13,7 +13,6 @@ public class FinalTime : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(TimerManager.CurrentTime);
         text.text = "Your Time: " + GetTimerAsString(TimerManager.CurrentTime);
     }
 

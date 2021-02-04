@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class TimerManager : MonoBehaviour
 {
+    public static float CurrentTime { get; private set; } = 0;
+
     [SerializeField]
     private Text timerText;
     [SerializeField]
@@ -11,8 +13,6 @@ public class TimerManager : MonoBehaviour
 
     private float startTime = 0;
     private bool stopTimer = false;
-
-    public static float CurrentTime { get; private set; } = 0;
 
     private void Awake()
     {
