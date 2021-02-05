@@ -46,7 +46,7 @@ public class GetFromServer : MonoBehaviour
             if (array_aux != null && array_aux.Length == 2)
             {
                 array_aux[0] = array_aux[0].Trim();
-                array_aux[0] = array_aux[1].Trim();
+                array_aux[1] = array_aux[1].Trim();
                 List<string> lst_aux = new List<string>(array_aux);
                 playersHighscores.Add(lst_aux);
             }

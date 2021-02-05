@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HighScoreCalculator : MonoBehaviour
 {
@@ -14,20 +12,20 @@ public class HighScoreCalculator : MonoBehaviour
 
     public float CalculateHighScore(string timerAsString)
     {
-        float timerAsfloat = ParseTimerAsString(timerAsString);
+        float timerAsfloat = StringTimerToFloat(timerAsString);
 
         return CalculateHighScore(timerAsfloat); 
     }
 
-    private float ParseTimerAsString(string timer)
+    private float StringTimerToFloat(string timer)
     {
         string[] timePlayed = timer.Split(':');
 
-        string minutes = timePlayed[0];
-        string seconds = timePlayed[1];
-        string milliseconds = timePlayed[2];
+        int minutes = int.Parse(timePlayed[0]);
+        int seconds = int.Parse(timePlayed[1]);
+        int milliseconds = int.Parse(timePlayed[2]);
 
-        return 3;
+        return (minutes * 60) + seconds + (milliseconds * 0.001f);
     }
 
     ////

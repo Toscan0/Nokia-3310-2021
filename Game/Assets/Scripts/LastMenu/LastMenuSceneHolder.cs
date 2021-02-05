@@ -27,15 +27,21 @@ public class LastMenuSceneHolder : MonoBehaviour
 
         // Calculate player highscore
         float playerTimer = TimerManager.CurrentTime;
-        Debug.Log("playerTimer " + playerTimer);
+        //Debug.Log("playerTimer " + playerTimer);
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
         //Debug.Log("score " + playerHighScore);
 
-        // Calculate players highscore
-        int otherPlayerHighscore;
+        // Check 10 bigger scores
+        float otherPlayerHighscore;
         for (int i = 0; i < newScore.Count; i++)
         {
-           // otherPlayerHighscore = newScore[i][1]
+            string aux = newScore[i][1];
+
+            if (aux != null && aux.Trim() != "" && aux != "NA")
+            {
+                // Calculate players highscore
+                otherPlayerHighscore = highScoreCalculator.CalculateHighScore(aux);
+            }
         }
 
 
