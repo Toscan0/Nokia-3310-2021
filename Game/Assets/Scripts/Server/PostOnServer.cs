@@ -6,20 +6,24 @@ using UnityEngine.Networking;
 public class PostOnServer : MonoBehaviour
 {
     private const string POST_HIGHSCORE_URL = "" +
-        "http://web.tecnico.ulisboa.pt/~ist181633/CatchTheFly/ServerSide/Post_HighScore.php";
+        "https://web.tecnico.ulisboa.pt/~ist181633/CatchTheFly/ServerSide/Post_HighScore.php";
 
-    public IEnumerator PostHighScore(string playerName, float time)
+    public IEnumerator PostHighScore(List<List<string>> toSend)
     {
+        Debug.Log("111111");
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-
-        string highScoreToSend = ParseDataToSend(playerName, time);
-
+        Debug.Log("222222222");
+        string highScoreToSend = "BLABLA";
+        Debug.Log("33333333333");
         wwwForm.Add(new MultipartFormDataSection("_content", highScoreToSend));
+        Debug.Log("444444444");
 
         UnityWebRequest www = UnityWebRequest.Post(POST_HIGHSCORE_URL, wwwForm);
+        Debug.Log("5555555555");
 
         //w8 for answer
         yield return www.SendWebRequest();
+        Debug.Log("6666666666");
 
         if (www.isNetworkError || www.isHttpError)
         {
@@ -27,10 +31,18 @@ public class PostOnServer : MonoBehaviour
         }
     }
 
-    private string ParseDataToSend(string playerName, float time)
+    private string LstLStStringToString(List<List<string>> lst)
     {
-        Debug.Log(playerName + " " + time);
+        string toSend = "";
 
-        return null;
+        for (int i = 0; i < lst.Count; i++)
+        {
+            // i) <PlayerName> <Time>min
+            toSend += lst[i][0] + ";"
+                + lst[i][1] + ".\n";
+        }
+
+        return toSend;
     }
+
 }

@@ -76,16 +76,20 @@ public class LastMenuSceneHolder : MonoBehaviour
 
 
 
-        foreach (var i in newScore)
+        /*foreach (var i in newScore)
         {
-            postOnServer.PostHighScore(i[0], 1111111);
             foreach (var e in i)
             {
-                
+                Debug.Log(e);
             }
+            OnScoreChanged?.Invoke(newScore);
         }
+        */
 
-        OnScoreChanged?.Invoke(newScore);
+        Debug.Log("***************************");
+        StartCoroutine(postOnServer.PostHighScore(newScore));
+        Debug.Log("############################");
+
     }
 
     private void OnDestroy()
