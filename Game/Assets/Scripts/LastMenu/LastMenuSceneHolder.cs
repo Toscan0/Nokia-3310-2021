@@ -25,10 +25,7 @@ public class LastMenuSceneHolder : MonoBehaviour
     {
         string nameAux = "";
         List<List<string>> newScore = new List<List<string>>();
-
-        newScore.AddRange(serverScore);
-
-        //newScore = serverScore;
+        newScore = CopyListToAnotherList(serverScore);
 
         string playerName = UserRandomName.UserName;
         float playerTimer = 10.20f; // TimerManager.CurrentTime;
@@ -78,6 +75,26 @@ public class LastMenuSceneHolder : MonoBehaviour
 
 
 
+
+    private List<List<string>> CopyListToAnotherList(List<List<string>> toCopy)
+    {
+        List<List<string>> lst = new List<List<string>>();
+        List<string> aux = new List<string>(); 
+
+        for (int i = 0; i < toCopy.Count; i++)
+        {
+
+            Debug.Log("---------");
+            foreach (var e in toCopy[i]) {
+                Debug.Log(e);
+                aux.Add(e);
+            }
+            aux.Clear();
+            Debug.Log("count " + aux.Count);
+        }
+
+        return lst;
+    }
 
 
     ////
