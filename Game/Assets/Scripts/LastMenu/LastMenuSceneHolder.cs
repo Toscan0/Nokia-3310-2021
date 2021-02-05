@@ -25,13 +25,19 @@ public class LastMenuSceneHolder : MonoBehaviour
     {
         //highscore = newScore;
 
-        // Check if player score is better;
+        // Calculate player highscore
         float playerTimer = TimerManager.CurrentTime;
-        //Debug.Log("playerTimer " + playerTimer);
+        Debug.Log("playerTimer " + playerTimer);
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
         //Debug.Log("score " + playerHighScore);
 
-        
+        // Calculate players highscore
+        int otherPlayerHighscore;
+        for (int i = 0; i < newScore.Count; i++)
+        {
+           // otherPlayerHighscore = newScore[i][1]
+        }
+
 
     }
 

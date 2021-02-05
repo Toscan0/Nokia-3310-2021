@@ -27,9 +27,7 @@ public class HighScoreText : MonoBehaviour
 
         for(int i = 0; i < newScore.Count; i++)
         {
-            Debug.Log("newScore[i][0]" + newScore[i][0]);
-            Debug.Log("newScore[i][1]" + newScore[i][1]);
-
+            // i) <PlayerName> <Time>min
             score += (i + 1) + ") " + newScore[i][0] + 
                 " " + newScore[i][1] + "min\n";
         }

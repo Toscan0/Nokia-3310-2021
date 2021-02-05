@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class HighScoreCalculator : MonoBehaviour
 {
-    /*void Start()
-    {
-        Debug.Log("teste1: " + CalculateHighScore(0.00000f));
-        Debug.Log("teste2: " + CalculateHighScore(1.00000f));
-        Debug.Log("teste3: " + CalculateHighScore(1.11111f));
-        Debug.Log("teste4: " + CalculateHighScore(1.99999f));
-        Debug.Log("teste5: " + CalculateHighScore(9.11111f));
-        Debug.Log("teste6: " + CalculateHighScore(9.99999f));
-    }*/
 
     public float CalculateHighScore(float timer)
     {
         return (GetMinutes(timer) * 100000)
         + (GetSecondsToDisplay(timer) * 1000)
         + (GetMilliseconds(timer) * 1);
+    }
+
+    public float CalculateHighScore(string timerAsString)
+    {
+        float timerAsfloat = ParseTimerAsString(timerAsString);
+
+        return CalculateHighScore(timerAsfloat); 
+    }
+
+    private float ParseTimerAsString(string timer)
+    {
+        string[] timePlayed = timer.Split(':');
+
+        string minutes = timePlayed[0];
+        string seconds = timePlayed[1];
+        string milliseconds = timePlayed[2];
+
+        return 3;
     }
 
     ////
