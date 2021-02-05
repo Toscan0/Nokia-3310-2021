@@ -9,8 +9,6 @@ public class LastMenuSceneHolder : MonoBehaviour
     [SerializeField]
     private GetFromServer dataFromServer;
 
-    private string highscore;
-
     private void Awake()
     {
         GetFromServer.OnDataReceived += UpdateHighScore;
@@ -23,8 +21,6 @@ public class LastMenuSceneHolder : MonoBehaviour
 
     private void UpdateHighScore(List<List<string>> newScore)
     {
-        //highscore = newScore;
-
         // Calculate player highscore
         float playerTimer = TimerManager.CurrentTime;
         //Debug.Log("playerTimer " + playerTimer);
@@ -41,10 +37,14 @@ public class LastMenuSceneHolder : MonoBehaviour
             {
                 // Calculate players highscore
                 otherPlayerHighscore = highScoreCalculator.CalculateHighScore(aux);
+
+                // TODO is score 
+            }
+            else
+            {
+                // TODO: If score is NA
             }
         }
-
-
     }
 
     private void OnDestroy()
