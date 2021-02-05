@@ -10,6 +10,8 @@ public class LastMenuSceneHolder : MonoBehaviour
     private HighScoreCalculator highScoreCalculator;
     [SerializeField]
     private GetFromServer dataFromServer;
+    [SerializeField]
+    private PostOnServer postOnServer;
 
     private void Awake()
     {
@@ -23,17 +25,16 @@ public class LastMenuSceneHolder : MonoBehaviour
 
     private void UpdateHighScore(List<List<string>> serverScore)
     {
-        string nameAux = "";
         List<List<string>> newScore = new List<List<string>>();
         newScore = CopyListToAnotherList(serverScore);
-
+        
         string playerName = UserRandomName.UserName;
         float playerTimer = 10.20f; // TimerManager.CurrentTime;
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
 
         // Check 10 bigger scores
         string nameToCompare = playerName;
-        float timerToCompare = playerTimer;
+        string timerToCompare = GetTimerAsString(playerTimer);
         float scoreToCompare = playerHighScore;
 
         for (int i = 0; i < serverScore.Count; i++)
@@ -47,24 +48,44 @@ public class LastMenuSceneHolder : MonoBehaviour
                 float otherPlayerHighscore = 
                     highScoreCalculator.CalculateHighScore(otherPlayerTimer);
 
-                // TODO: is player score bigger ?
-                if(scoreToCompare < otherPlayerHighscore)
+                // because from start null players have score 0
+                if (otherPlayerHighscore == 0)
                 {
+                    otherPlayerHighscore = 999999999999;
+                }
+
+                // Check if score is bigger
+                if(scoreToCompare < otherPlayerHighscore )
+                {
+                    // update score
                     newScore[i][0] = nameToCompare;
-                    newScore[i][1] = GetTimerAsString(timerToCompare);
+                    newScore[i][1] = timerToCompare;
 
-                    nameAux = serverScore[i][0];
+                    // update comparation
                     scoreToCompare = otherPlayerHighscore;
+                    nameToCompare = otherPlayerName;
+                    timerToCompare = otherPlayerTimer;
 
-                    
-
-                    //Debug.Log(newScore);
+                   
                 }
             }
         }
 
         // TODO: post on server
         // TODO: Update High score, Maybe anim when player improve highscore
+
+
+
+        foreach (var i in newScore)
+        {
+            postOnServer.PostHighScore(i[0], 1111111);
+            foreach (var e in i)
+            {
+                
+            }
+        }
+
+        OnScoreChanged?.Invoke(newScore);
     }
 
     private void OnDestroy()
@@ -79,18 +100,15 @@ public class LastMenuSceneHolder : MonoBehaviour
     private List<List<string>> CopyListToAnotherList(List<List<string>> toCopy)
     {
         List<List<string>> lst = new List<List<string>>();
-        List<string> aux = new List<string>(); 
 
-        for (int i = 0; i < toCopy.Count; i++)
+        foreach (var innerLst in toCopy)
         {
+            List<string> aux = new List<string>();
 
-            Debug.Log("---------");
-            foreach (var e in toCopy[i]) {
-                Debug.Log(e);
-                aux.Add(e);
+            foreach (var e in innerLst) {
+                aux.Add(e);                
             }
-            aux.Clear();
-            Debug.Log("count " + aux.Count);
+            lst.Add(aux);
         }
 
         return lst;
