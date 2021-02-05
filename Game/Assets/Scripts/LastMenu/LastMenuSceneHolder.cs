@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LastMenuSceneHolder : MonoBehaviour
 {
+    public static Action<List<List<string>>> OnScoreChanged;
+
     [SerializeField]
     private HighScoreCalculator highScoreCalculator;
     [SerializeField]
@@ -19,30 +21,48 @@ public class LastMenuSceneHolder : MonoBehaviour
         StartCoroutine(dataFromServer.GetHighScore());
     }
 
-    private void UpdateHighScore(List<List<string>> newScore)
+    private void UpdateHighScore(List<List<string>> serverScore)
     {
-        // Calculate player highscore
-        float playerTimer = TimerManager.CurrentTime;
-        //Debug.Log("playerTimer " + playerTimer);
+        string nameAux = "";
+        List<List<string>> newScore = new List<List<string>>();
+
+        newScore.AddRange(serverScore);
+
+        //newScore = serverScore;
+
+        string playerName = UserRandomName.UserName;
+        float playerTimer = 10.20f; // TimerManager.CurrentTime;
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
-        //Debug.Log("score " + playerHighScore);
 
         // Check 10 bigger scores
-        float otherPlayerHighscore;
-        for (int i = 0; i < newScore.Count; i++)
-        {
-            string aux = newScore[i][1];
+        string nameToCompare = playerName;
+        float timerToCompare = playerTimer;
+        float scoreToCompare = playerHighScore;
 
-            if (aux != null && aux.Trim() != "" && aux != "NA")
+        for (int i = 0; i < serverScore.Count; i++)
+        {
+            string otherPlayerName = serverScore[i][0];
+            string otherPlayerTimer = serverScore[i][1];
+
+            if (otherPlayerTimer != null && otherPlayerTimer.Trim() != "")
             {
-                // Calculate players highscore
-                otherPlayerHighscore = highScoreCalculator.CalculateHighScore(aux);
+                // Calculate the other player highscore
+                float otherPlayerHighscore = 
+                    highScoreCalculator.CalculateHighScore(otherPlayerTimer);
 
                 // TODO: is player score bigger ?
-            }
-            else
-            {
-                // TODO: If score is NA
+                if(scoreToCompare < otherPlayerHighscore)
+                {
+                    newScore[i][0] = nameToCompare;
+                    newScore[i][1] = GetTimerAsString(timerToCompare);
+
+                    nameAux = serverScore[i][0];
+                    scoreToCompare = otherPlayerHighscore;
+
+                    
+
+                    //Debug.Log(newScore);
+                }
             }
         }
 
@@ -53,5 +73,33 @@ public class LastMenuSceneHolder : MonoBehaviour
     private void OnDestroy()
     {
         GetFromServer.OnDataReceived -= UpdateHighScore;
+    }
+
+
+
+
+
+
+    ////
+    private string GetTimerAsString(float timer)
+    {
+        return GetMinutes(timer)
+        + ":" + GetSecondsToDisplay(timer) + ":"
+        + GetMilliseconds(timer);
+    }
+
+    private string GetMinutes(float seconds)
+    {
+        return ((int)seconds / 60).ToString();
+    }
+
+    private string GetSecondsToDisplay(float seconds)
+    {
+        return (seconds % 60).ToString("f0");
+    }
+
+    private string GetMilliseconds(float seconds)
+    {
+        return ((seconds * 1000) % 1000).ToString("f0");
     }
 }
