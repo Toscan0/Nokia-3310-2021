@@ -38,13 +38,16 @@ public class LastMenuSceneHolder : MonoBehaviour
                 // Calculate players highscore
                 otherPlayerHighscore = highScoreCalculator.CalculateHighScore(aux);
 
-                // TODO is score 
+                // TODO: is player score bigger ?
             }
             else
             {
                 // TODO: If score is NA
             }
         }
+
+        // TODO: post on server
+        // TODO: Update High score, Maybe anim when player improve highscore
     }
 
     private void OnDestroy()
