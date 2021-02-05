@@ -20,11 +20,14 @@ public class LastMenuSceneHolder : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("game started");
+
         StartCoroutine(dataFromServer.GetHighScore());
     }
 
     private void UpdateHighScore(List<List<string>> serverScore)
     {
+        Debug.Log("data received");
         List<List<string>> newScore = new List<List<string>>();
         newScore = CopyListToAnotherList(serverScore);
         
@@ -71,21 +74,11 @@ public class LastMenuSceneHolder : MonoBehaviour
             }
         }
 
-        // TODO: post on server
-        // TODO: Update High score, Maybe anim when player improve highscore
+        Debug.Log("end");
 
+        // TODO: Update High score txt, Maybe anim when player improve highscore
 
-
-        /*foreach (var i in newScore)
-        {
-            foreach (var e in i)
-            {
-                Debug.Log(e);
-            }
-            OnScoreChanged?.Invoke(newScore);
-        }
-        */
-
+        OnScoreChanged?.Invoke(newScore);
         StartCoroutine(postOnServer.PostHighScore(newScore));
     }
 
