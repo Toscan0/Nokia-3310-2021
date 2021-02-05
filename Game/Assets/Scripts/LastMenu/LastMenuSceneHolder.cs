@@ -29,7 +29,7 @@ public class LastMenuSceneHolder : MonoBehaviour
         newScore = CopyListToAnotherList(serverScore);
         
         string playerName = UserRandomName.UserName;
-        float playerTimer = 10.20f; // TimerManager.CurrentTime;
+        float playerTimer = TimerManager.CurrentTime;
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
 
         // Check 10 bigger scores
@@ -86,10 +86,7 @@ public class LastMenuSceneHolder : MonoBehaviour
         }
         */
 
-        Debug.Log("***************************");
         StartCoroutine(postOnServer.PostHighScore(newScore));
-        Debug.Log("############################");
-
     }
 
     private void OnDestroy()

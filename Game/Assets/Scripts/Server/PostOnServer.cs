@@ -10,20 +10,14 @@ public class PostOnServer : MonoBehaviour
 
     public IEnumerator PostHighScore(List<List<string>> toSend)
     {
-        Debug.Log("111111");
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
-        Debug.Log("222222222");
-        Debug.Log("33333333333");
         wwwForm.Add(new MultipartFormDataSection("_content",
             ParseDataToSend(toSend)));
-        Debug.Log("444444444");
 
         UnityWebRequest www = UnityWebRequest.Post(POST_HIGHSCORE_URL, wwwForm);
-        Debug.Log("5555555555");
 
         //w8 for answer
         yield return www.SendWebRequest();
-        Debug.Log("6666666666");
 
         if (www.isNetworkError || www.isHttpError)
         {
