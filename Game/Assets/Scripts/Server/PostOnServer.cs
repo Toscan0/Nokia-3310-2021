@@ -13,9 +13,9 @@ public class PostOnServer : MonoBehaviour
         Debug.Log("111111");
         List<IMultipartFormSection> wwwForm = new List<IMultipartFormSection>();
         Debug.Log("222222222");
-        string highScoreToSend = "BLABLA";
         Debug.Log("33333333333");
-        wwwForm.Add(new MultipartFormDataSection("_content", highScoreToSend));
+        wwwForm.Add(new MultipartFormDataSection("_content",
+            ParseDataToSend(toSend)));
         Debug.Log("444444444");
 
         UnityWebRequest www = UnityWebRequest.Post(POST_HIGHSCORE_URL, wwwForm);
@@ -31,7 +31,7 @@ public class PostOnServer : MonoBehaviour
         }
     }
 
-    private string LstLStStringToString(List<List<string>> lst)
+    private string ParseDataToSend(List<List<string>> lst)
     {
         string toSend = "";
 
