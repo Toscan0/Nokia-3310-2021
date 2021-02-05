@@ -1,21 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Text))]
 public class HighScoreText : MonoBehaviour
 {
     private string scores = "Retrieving data from the server..";
-        /*
-        "1) 1234567 10:10:30min\n" +
-        "2) 1234567 10:10:30min\n" +
-        "3) 1234567 10:10:30min\n" +
-        "4) 1234567 10:10:30min\n" +
-        "5) 1234567 10:10:30min\n" +
-        "6) 1234567 10:10:30min\n" +
-        "7) 1234567 10:10:30min\n" +
-        "8) 1234567 10:10:30min\n" +
-        "9) 1234567 10:10:30min\n" +
-        "10) 1234567 10:10:30min";*/
 
     private Text text;
 
@@ -29,6 +19,22 @@ public class HighScoreText : MonoBehaviour
     private void Start()
     {
         UpdateHighScore(scores);
+    }
+
+    private void UpdateHighScore(List<List<string>> newScore)
+    {
+        string score = "";
+
+        for(int i = 0; i < newScore.Count; i++)
+        {
+            Debug.Log("newScore[i][0]" + newScore[i][0]);
+            Debug.Log("newScore[i][1]" + newScore[i][1]);
+
+            score += (i + 1) + ") " + newScore[i][0] + 
+                " " + newScore[i][1] + "min\n";
+        }
+
+        text.text = score;
     }
 
     private void UpdateHighScore(string newScore)

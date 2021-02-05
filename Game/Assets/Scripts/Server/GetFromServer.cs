@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class GetFromServer : MonoBehaviour
 {
-    public static Action<string> OnDataReceived;
+    public static Action<List<List<string>>> OnDataReceived;
 
     private const string GET_HIGHSCORE_URL = "" +
         "http://web.tecnico.ulisboa.pt/~ist181633/CatchTheFly/ServerSide/Get_HighScore.php";
@@ -28,10 +29,29 @@ public class GetFromServer : MonoBehaviour
         }
     }
     
-    private string ParseServerData(string data)
+    private List<List<string>> ParseServerData(string data)
     {
-        Debug.Log("data received " + data);
+        List<List<string>> playersHighscores = new List<List<string>>();
 
-        return data;
+        data = data.Trim();
+
+        // each player data from the server
+        string[] playersData = data.Split('.');
+
+        string[] array_aux;
+        for(int i = 0; i < playersData.Length; i++)
+        {
+            array_aux = playersData[i].Split(';');
+
+            if (array_aux != null && array_aux.Length == 2)
+            {
+                array_aux[0] = array_aux[0].Trim();
+                array_aux[0] = array_aux[1].Trim();
+                List<string> lst_aux = new List<string>(array_aux);
+                playersHighscores.Add(lst_aux);
+            }
+        }
+
+        return playersHighscores;
     }
 }

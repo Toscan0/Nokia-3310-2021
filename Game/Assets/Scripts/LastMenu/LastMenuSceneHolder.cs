@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LastMenuSceneHolder : MonoBehaviour
@@ -20,15 +21,15 @@ public class LastMenuSceneHolder : MonoBehaviour
         StartCoroutine(dataFromServer.GetHighScore());
     }
 
-    private void UpdateHighScore(string newScore)
+    private void UpdateHighScore(List<List<string>> newScore)
     {
-        highscore = newScore;
+        //highscore = newScore;
 
         // Check if player score is better;
         float playerTimer = TimerManager.CurrentTime;
-        Debug.Log("playerTimer " + playerTimer);
+        //Debug.Log("playerTimer " + playerTimer);
         float playerHighScore = highScoreCalculator.CalculateHighScore(playerTimer);
-        Debug.Log("score " + playerHighScore);
+        //Debug.Log("score " + playerHighScore);
 
         
 
