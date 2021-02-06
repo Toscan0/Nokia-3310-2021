@@ -5,6 +5,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class HighScoreText : MonoBehaviour
 {
+    [SerializeField]
+    private bool lastScene = false;
+
     private string scores = "Retrieving data from the server..";
 
     private Text text;
@@ -25,29 +28,28 @@ public class HighScoreText : MonoBehaviour
     private void UpdateHighScore2(List<List<string>> newScore)
     {
         string score = "";
-        Debug.Log("##########");
         for (int i = 0; i < newScore.Count; i++)
         {
             // i) <PlayerName> <Time>min
             score += (i + 1) + ") " + newScore[i][0] +
                 " " + newScore[i][1] + "min\n";
         }
-        Debug.Log(score);
         text.text = score;
     }
 
     private void UpdateHighScore(List<List<string>> newScore)
     {
-        string score = "";
-        Debug.Log("----------------");
-        for (int i = 0; i < newScore.Count; i++)
+        if (!lastScene)
         {
-            // i) <PlayerName> <Time>min
-            score += (i + 1) + ") " + newScore[i][0] + 
-                " " + newScore[i][1] + "min\n";
+            string score = "";
+            for (int i = 0; i < newScore.Count; i++)
+            {
+                // i) <PlayerName> <Time>min
+                score += (i + 1) + ") " + newScore[i][0] +
+                    " " + newScore[i][1] + "min\n";
+            }
+            text.text = score;
         }
-        Debug.Log(score);
-        text.text = score;
     }
 
     private void UpdateHighScore(string newScore)
