@@ -20,14 +20,11 @@ public class LastMenuSceneHolder : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("game started");
-
         StartCoroutine(dataFromServer.GetHighScore());
     }
 
     private void UpdateHighScore(List<List<string>> serverScore)
     {
-        Debug.Log("data received");
         List<List<string>> newScore = new List<List<string>>();
         newScore = CopyListToAnotherList(serverScore);
         
@@ -74,10 +71,7 @@ public class LastMenuSceneHolder : MonoBehaviour
             }
         }
 
-        Debug.Log("end");
-
-        // TODO: Update High score txt, Maybe anim when player improve highscore
-
+        // TODO: Maybe anim when player improve highscore
         OnScoreChanged?.Invoke(newScore);
         StartCoroutine(postOnServer.PostHighScore(newScore));
     }
