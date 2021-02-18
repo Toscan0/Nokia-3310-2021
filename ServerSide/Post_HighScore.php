@@ -1,4 +1,5 @@
 <?php
+	header("Access-Control-Allow-Origin: *");
 	$file_name = './highscore.txt';
 	$content = $_POST["_content"];
 
